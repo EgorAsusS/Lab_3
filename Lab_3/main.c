@@ -7,12 +7,14 @@ char* convert_long_bv_to_str(unsigned char* vec, size_t len);
 unsigned char* log_mul(unsigned char* vec1, size_t len1, unsigned char* vec2, size_t len2);
 unsigned char* log_add(unsigned char* vec1, size_t len1, unsigned char* vec2, size_t len2);
 unsigned char* xor (unsigned char* vec1, size_t len1, unsigned char* vec2, size_t len2);
-unsigned char* invert_bv(unsigned char* veci, size_t leni);
-unsigned char* shift_left(unsigned char* veci, size_t leni);
+void invert_bv(unsigned char* vec, size_t len);
+void shift_k_left(unsigned char* vec, size_t len, size_t k);
+void shift_k_right(unsigned char* vec, size_t len, size_t k);
 
 int main() {
-    //char* text1 = "111";
-    //char* text2 = "111";
+    // & | ^
+    //char text1[] = "111";
+    //char text2[] = "111";
     //int len1 = 0;
     //int len2 = 0;
     //unsigned char* vec1 = convert_str_to_long_bv(text1, &len1);
@@ -36,24 +38,41 @@ int main() {
     //free(vec);
     //free(vec1);
     //free(vec2);
-    char* text = "111";
-    int leni = 0;
-    unsigned char* veci = convert_str_to_long_bv(text, &leni);
-    unsigned char* veco = invert_bv(veci, leni);
-    int leno = leni;
-    if (veco) {
-        char* veci_str = convert_long_bv_to_str(veci, leni);
-        char* veco_str = convert_long_bv_to_str(veco, leno);
-        printf("%s\n", veci_str);
-        printf("%s\n", veco_str);
-        free(veci_str);
-        free(veco_str);
-    }
-    else {
-        printf("Error\n");
-    }
-    free(veci);
-    free(veco);
+
+
+    // ~
+    //char text[] = "111";
+    //int leni = 0;
+    //unsigned char* veci = convert_str_to_long_bv(text, &leni);
+    //invert_bv(veci, leni);
+    //char* veci_str = convert_long_bv_to_str(veci, leni);
+    //printf("%s\n", veci_str);
+    //free(veci_str);
+    //free(veci);
+
+
+    // <<
+    //char text[] = "11111111111111111111111111111111111111111";
+    //int len = 0;
+    //unsigned char* vec = convert_str_to_long_bv(text, &len);
+    //shift_k_left(vec, len, 40);
+    //char* vec_str = convert_long_bv_to_str(vec, len);
+    //printf("%s\n", vec_str);
+    //free(vec_str);
+    //free(vec);
+
+    // >>
+    char text[] = "000000000";
+    int len = 0;
+    unsigned char* vec = convert_str_to_long_bv(text, &len);
+    invert_bv(vec, len);
+    shift_k_left(vec, len, 1);
+    char* vec_str = convert_long_bv_to_str(vec, len);
+    printf("%s\n", vec_str);
+    free(vec_str);
+    free(vec);
+
+
     return 0;
 }
 
@@ -150,54 +169,90 @@ unsigned char* xor(unsigned char* vec1, size_t len1, unsigned char* vec2, size_t
     return vec;
 }
 
-unsigned char* invert_bv(unsigned char* veci, size_t leni) {
-    unsigned char* veco = NULL;
-    if (veci && leni) {
-        int cells = ((leni - 1) / 8) + 1;
-        veco = (unsigned char*)calloc(leni, sizeof(unsigned char));
-        if (veco) {
-            for (int i = 0; i < cells; i++) {
-                veco[i] = ~veci[i];
-            }
-            int tail = cells * 8 - leni;
-            unsigned char mask = 0;
-            if (tail) {
-                mask = -1;
-                mask = mask >> tail;
-                veco[cells - 1] = veco[cells - 1] & mask;
-            }
+void invert_bv(unsigned char* vec, size_t len) {
+    if (vec && len) {
+        int cells = ((len - 1) / 8) + 1;
+        for (int i = 0; i < cells; i++) {
+            vec[i] = ~vec[i];
         }
+        int tail = cells * 8 - len;
+        unsigned char mask = 0;
+        mask = -1;
+        mask = mask >> tail;
+        vec[cells - 1] = vec[cells - 1] & mask;
     }
-    return veco;
 }
 
-//unsigned char* shift_k_left(unsigned char* veci, size_t leni, size_t k) {
-//    unsigned char* veco = NULL;
-//    if (veci && leni) {
-//        int cells = ((leni - 1) / 8) + 1;
-//        veco = (unsigned char*)calloc(leni, sizeof(unsigned char));
-//        if (veco) {
-//            size_t j = k / 8;
-//            size_t i = 0;
-//            size_t bit = k & 8;
-//            while (j < cells) {
-//                veco[i] = veci[j];
-//            }
-//            while (i < cells) {
-//
-//            }
-//
-//            //for (int i = 0; i < cells; i++) {
-//            //    veco[i] = ~veci[i];
-//            //}
-//            //int tail = cells * 8 - leni;
-//            //unsigned char mask = 0;
-//            //if (tail) {
-//            //    mask = -1;
-//            //    mask = mask >> tail;
-//            //    veco[cells - 1] = veco[cells - 1] & mask;
-//            //}
-//        }
-//    }
-//    return veco;
-//}
+void shift_k_left(unsigned char* vec, size_t len, size_t k) {
+    if (vec && len && k <= len) {
+        int cells = ((len - 1) / 8) + 1;
+        size_t j = k / 8;
+        size_t i = 0;
+        if (j) {
+            while (j < cells) {
+                vec[i] = vec[j];
+                i++;
+                j++;
+            }
+            while (i < cells) {
+                vec[i] = 0;
+                i++;
+            }
+        }
+        size_t bit = k % 8;
+        unsigned char ib = 0;
+        unsigned char mask = -1;
+        int ix = 0;
+        for (ix = 0; ix < cells - 1; ix++) {
+            mask = -1;
+            vec[ix] = vec[ix] >> bit;
+            mask = mask >> (8 - bit);
+            ib = vec[ix + 1] & mask;
+            ib = ib << (8 - bit);
+            vec[ix] = vec[ix] | ib;
+        }
+        vec[ix] = vec[ix] >> bit;
+        int tail = cells * 8 - len;
+        mask = -1;
+        mask = mask >> tail;
+        vec[cells - 1] = vec[cells - 1] & mask;
+    }
+}
+
+void shift_k_right(unsigned char* vec, size_t len, size_t k) {
+    if (vec && len && k <= len) {
+        int cells = ((len - 1) / 8) + 1;
+        size_t j = k / 8;
+        size_t i = 0;
+        if (j) {
+            while (j < cells) {
+                vec[j] = vec[i];
+                i++;
+                j++;
+            }
+            i = 0;
+            while (i < k / 8) {
+                vec[i] = 0;
+                i++;
+            }
+        }
+        size_t bit = k % 8;
+        unsigned char ibx = 0;
+        unsigned char iby = 0;
+        unsigned char mask = -1;
+        int ix = 0;
+        for (ix = 0; ix < cells; ix++) {
+            mask = -1;
+            mask = mask << (8 - bit);
+            iby = vec[ix] & mask;
+            iby = iby >> (8 - bit);
+            vec[ix] = vec[ix] << bit;
+            vec[ix] = vec[ix] | ibx;
+            ibx = iby;
+        }
+        int tail = cells * 8 - len;
+        mask = -1;
+        mask = mask >> tail;
+        vec[cells - 1] = vec[cells - 1] & mask;
+    }
+}
