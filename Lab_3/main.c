@@ -10,6 +10,8 @@ unsigned char* xor (unsigned char* vec1, size_t len1, unsigned char* vec2, size_
 void invert_bv(unsigned char* vec, size_t len);
 void shift_k_left(unsigned char* vec, size_t len, size_t k);
 void shift_k_right(unsigned char* vec, size_t len, size_t k);
+void set_k(unsigned char* vec, size_t len, size_t k);
+void reset_k(unsigned char* vec, size_t len, size_t k);
 
 int main() {
     // & | ^
@@ -62,11 +64,20 @@ int main() {
     //free(vec);
 
     // >>
-    char text[] = "000000000";
+    //char text[] = "000000000";
+    //int len = 0;
+    //unsigned char* vec = convert_str_to_long_bv(text, &len);
+    //invert_bv(vec, len);
+    //shift_k_left(vec, len, 1);
+    //char* vec_str = convert_long_bv_to_str(vec, len);
+    //printf("%s\n", vec_str);
+    //free(vec_str);
+    //free(vec);
+
+    char text[] = "1111111111";
     int len = 0;
     unsigned char* vec = convert_str_to_long_bv(text, &len);
-    invert_bv(vec, len);
-    shift_k_left(vec, len, 1);
+    reset_k(vec, len, 0);
     char* vec_str = convert_long_bv_to_str(vec, len);
     printf("%s\n", vec_str);
     free(vec_str);
@@ -254,5 +265,25 @@ void shift_k_right(unsigned char* vec, size_t len, size_t k) {
         mask = -1;
         mask = mask >> tail;
         vec[cells - 1] = vec[cells - 1] & mask;
+    }
+}
+
+void set_k(unsigned char* vec, size_t len, size_t k) {
+    if (vec && len && k <= len) {
+        unsigned char mask = 1;
+        size_t byte = k / 8;
+        size_t bit = k % 8;
+        mask = mask << bit;
+        vec[byte] = vec[byte] | mask;
+    }
+}
+
+void reset_k(unsigned char* vec, size_t len, size_t k) {
+    if (vec && len && k <= len) {
+        unsigned char mask = 1;
+        size_t byte = k / 8;
+        size_t bit = k % 8;
+        mask = mask << bit;
+        vec[byte] = vec[byte] & ~mask;
     }
 }
