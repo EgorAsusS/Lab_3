@@ -60,46 +60,46 @@ int main() {
 
 
     // <<
-    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    //size_t bits = 0;
-    //unsigned char* vec = convertStrToLongBv(text, &bits);
-    //inversion(vec, bits);
-    //printLongBv(vec, bits);
-    //shiftLeft(vec, bits, 97);
-    //printLongBv(vec, bits);
-    //free(vec);
-    //vec = NULL;
-
-    // >>
-    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    //size_t bits = 0;
-    //unsigned char* vec = convertStrToLongBv(text, &bits);
-    //inversion(vec, bits);
-    //printLongBv(vec, bits);
-    //shiftRight(vec, bits, 97);
-    //printLongBv(vec, bits);
-    //free(vec);
-    //vec = NULL;
-
-    //
-//    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-//    char text[] = "000000000";
+//    char text[] = "00000000";
+//    char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 //    size_t bits = 0;
 //    unsigned char* vec = convertStrToLongBv(text, &bits);
 //    inversion(vec, bits);
 //    printLongBv(vec, bits);
-//    for (int i = 0; i < 4; i++) {
-//        shiftRight(vec, bits, 1);
-//        printLongBv(vec, bits);
-//    }
-//    for (int i = 0; i < 5; i++) {
+//    shiftLeft(vec, bits, 8);
+//    printLongBv(vec, bits);
+//    free(vec);
+//    vec = NULL;
+
+    // >>
+//    char text[] = "00000000";
+    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+//    size_t bits = 0;
+//    unsigned char* vec = convertStrToLongBv(text, &bits);
+//    inversion(vec, bits);
+//    printLongBv(vec, bits);
+//    shiftRight(vec, bits, 8);
+//    printLongBv(vec, bits);
+//    free(vec);
+//    vec = NULL;
+
+    //
+    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    //char text[] = "000000000";
+    size_t bits = 0;
+    unsigned char* vec = convertStrToLongBv(text, &bits);
+    inversion(vec, bits);
+    printLongBv(vec, bits);
+    for (int i = 0; i < 100; i++) {
+        shiftRight(vec, bits, 1);
+        printLongBv(vec, bits);
+    }
+//    for (int i = 0; i < 100; i++) {
 //        shiftLeft(vec, bits, 1);
 //       printLongBv(vec, bits);
 //    }
-//    free(vec);
-//    vec = NULL;
+    free(vec);
+    vec = NULL;
 
     //
     //char text[] = "0000000000000000000000000000000000000000000000000011111111111111111111111111111111111111111111111111";
@@ -150,7 +150,7 @@ unsigned char* convertStrToLongBv(char* str, size_t* bits) {
     size_t bytes = 0, ix = 0;
     unsigned char mask = 1;
     unsigned char* vec = NULL;
-    if (str && bits) {
+    if (str && *str && bits) {
         *bits = strlen(str);
         bytes = ((*bits - 1) / 8) + 1;
         vec = (unsigned char*)calloc(bytes, sizeof(unsigned char));
@@ -322,13 +322,15 @@ void shiftRight(unsigned char* vec, size_t bits, size_t k) {
         size_t ix = k / 8;
         size_t j = bytes - 1;
         size_t i = j - ix;
-        if (j) {
-            while (i > 0) {
+        if(ix){
+            if (j > ix) {
+                while (i > 0) {
+                    vec[j] = vec[i];
+                    i--;
+                    j--;
+                }
                 vec[j] = vec[i];
-                i--;
-                j--;
             }
-            vec[j] = vec[i];
             i = 0;
             while (i < ix) {
                 vec[i] = 0;
