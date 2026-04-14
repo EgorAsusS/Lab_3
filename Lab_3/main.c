@@ -150,7 +150,7 @@ unsigned char* convertStrToLongBv(char* str, size_t* bits) {
     size_t bytes = 0, ix = 0;
     unsigned char mask = 1;
     unsigned char* vec = NULL;
-    if (str && bits) {
+    if (str && *str && bits) {
         *bits = strlen(str);
         bytes = ((*bits - 1) / 8) + 1;
         vec = (unsigned char*)calloc(bytes, sizeof(unsigned char));
