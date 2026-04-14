@@ -60,28 +60,28 @@ int main() {
 
 
     // <<
-    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    //size_t bits = 0;
-    //unsigned char* vec = convertStrToLongBv(text, &bits);
-    //inversion(vec, bits);
-    //printLongBv(vec, bits);
-    //shiftLeft(vec, bits, 97);
-    //printLongBv(vec, bits);
-    //free(vec);
-    //vec = NULL;
+    char text[] = "0000000000000000";
+//    char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    size_t bits = 0;
+    unsigned char* vec = convertStrToLongBv(text, &bits);
+    inversion(vec, bits);
+    printLongBv(vec, bits);
+    shiftLeft(vec, bits, 15);
+    printLongBv(vec, bits);
+    free(vec);
+    vec = NULL;
 
     // >>
-    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+//    char text[] = "00000000";
     //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    //size_t bits = 0;
-    //unsigned char* vec = convertStrToLongBv(text, &bits);
-    //inversion(vec, bits);
-    //printLongBv(vec, bits);
-    //shiftRight(vec, bits, 97);
-    //printLongBv(vec, bits);
-    //free(vec);
-    //vec = NULL;
+//    size_t bits = 0;
+//    unsigned char* vec = convertStrToLongBv(text, &bits);
+//    inversion(vec, bits);
+//    printLongBv(vec, bits);
+//    shiftRight(vec, bits, 8);
+//    printLongBv(vec, bits);
+//    free(vec);
+//    vec = NULL;
 
     //
 //    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
@@ -322,13 +322,20 @@ void shiftRight(unsigned char* vec, size_t bits, size_t k) {
         size_t ix = k / 8;
         size_t j = bytes - 1;
         size_t i = j - ix;
-        if (j) {
+        if (j && j > ix) {
             while (i > 0) {
                 vec[j] = vec[i];
                 i--;
                 j--;
             }
             vec[j] = vec[i];
+            i = 0;
+            while (i < ix) {
+                vec[i] = 0;
+                i++;
+            }
+        }
+        else if (ix){
             i = 0;
             while (i < ix) {
                 vec[i] = 0;
