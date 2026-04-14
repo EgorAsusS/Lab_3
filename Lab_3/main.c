@@ -27,25 +27,25 @@ int main() {
 
 
     // & | ^
-//    char text1[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-//    //char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-//    //char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-//    char text2[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-//    size_t bitsA = 0;
-//    size_t bitsB = 0;
-//    unsigned char* vecA = convertStrToLongBv(text1, &bitsA);
-//    unsigned char* vecB = convertStrToLongBv(text2, &bitsB);
-//    unsigned char* vec = sumMod2(vecA, bitsA, vecB, bitsB);
-//    size_t bits = bitsA;
-//    printLongBv(vecA, bitsA);
-//    printLongBv(vecB, bitsB);
-//    printLongBv(vec, bits);
-//    free(vec);
-//    free(vecA);
-//    free(vecB);
-//    vec = NULL;
-//    vecA = NULL;
-//    vecB = NULL;
+    char text1[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    //char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    //char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    char text2[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    size_t bitsA = 0;
+    size_t bitsB = 0;
+    unsigned char* vecA = convertStrToLongBv(text1, &bitsA);
+    unsigned char* vecB = convertStrToLongBv(text2, &bitsB);
+    unsigned char* vec = sumMod2(vecA, bitsA, vecB, bitsB);
+    size_t bits = bitsA;
+    printLongBv(vecA, bitsA);
+    printLongBv(vecB, bitsB);
+    printLongBv(vec, bits);
+    free(vec);
+    free(vecA);
+    free(vecB);
+    vec = NULL;
+    vecA = NULL;
+    vecB = NULL;
 
 
     // ~
@@ -84,22 +84,22 @@ int main() {
 //    vec = NULL;
 
     //
-    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+//    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     //char text[] = "000000000";
-    size_t bits = 0;
-    unsigned char* vec = convertStrToLongBv(text, &bits);
-    inversion(vec, bits);
-    printLongBv(vec, bits);
-    for (int i = 0; i < 100; i++) {
-        shiftRight(vec, bits, 1);
-        printLongBv(vec, bits);
-    }
+//    size_t bits = 0;
+//    unsigned char* vec = convertStrToLongBv(text, &bits);
+//    inversion(vec, bits);
+//    printLongBv(vec, bits);
+//    for (int i = 0; i < 100; i++) {
+//        shiftRight(vec, bits, 1);
+//        printLongBv(vec, bits);
+//    }
 //    for (int i = 0; i < 100; i++) {
 //        shiftLeft(vec, bits, 1);
 //       printLongBv(vec, bits);
 //    }
-    free(vec);
-    vec = NULL;
+//    free(vec);
+//    vec = NULL;
 
     //
     //char text[] = "0000000000000000000000000000000000000000000000000011111111111111111111111111111111111111111111111111";
@@ -268,9 +268,8 @@ void inversion(unsigned char* vec, size_t bits) {
         for (size_t i = 0; i < bytes; i++) {
             vec[i] = ~vec[i];
         }
-        size_t tail = bytes * 8 - bits;
         unsigned char mask = -1;
-        mask = mask >> tail;
+        mask = mask >> (bytes * 8 - bits);
         vec[bytes - 1] = vec[bytes - 1] & mask;
     }
 }
@@ -309,9 +308,8 @@ void shiftLeft(unsigned char* vec, size_t bits, size_t k) {
             }
             vec[ix] = vec[ix] >> bit;
         }
-        size_t tail = bytes * 8 - bits;
         mask = -1;
-        mask = mask >> tail;
+        mask = mask >> (bytes * 8 - bits);
         vec[bytes - 1] = vec[bytes - 1] & mask;
     }
 }
@@ -353,9 +351,8 @@ void shiftRight(unsigned char* vec, size_t bits, size_t k) {
                 ibx = iby;
             }
         }
-        size_t tail = bytes * 8 - bits;
         mask = -1;
-        mask = mask >> tail;
+        mask = mask >> (bytes * 8 - bits);
         vec[bytes - 1] = vec[bytes - 1] & mask;
     }
 }
