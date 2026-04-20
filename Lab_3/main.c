@@ -25,27 +25,45 @@ int main() {
     //char text[] = "000000000";
     //char text[] = "111111111";
 
+    // convert/print
+    char text[] = "111100001";
+    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    size_t bits = 0;
+    unsigned char* vec = convertStrToLongBv(text, &bits);
+    char* str = convertLongBvToStr(vec, bits);
+    printLongBv(vec, bits);
+    if (str) {
+        printf("%s\n", str);
+    }
+    else {
+        printf("Error\n");
+    }
+    free(vec);
+    free(str);
+    vec = NULL;
+    str = NULL;
 
     // & | ^
-    char text1[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    //char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    //char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    char text2[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    size_t bitsA = 0;
-    size_t bitsB = 0;
-    unsigned char* vecA = convertStrToLongBv(text1, &bitsA);
-    unsigned char* vecB = convertStrToLongBv(text2, &bitsB);
-    unsigned char* vec = sumMod2(vecA, bitsA, vecB, bitsB);
-    size_t bits = bitsA;
-    printLongBv(vecA, bitsA);
-    printLongBv(vecB, bitsB);
-    printLongBv(vec, bits);
-    free(vec);
-    free(vecA);
-    free(vecB);
-    vec = NULL;
-    vecA = NULL;
-    vecB = NULL;
+    //char text1[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    ////char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    ////char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    //char text2[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    //size_t bitsA = 0;
+    //size_t bitsB = 0;
+    //unsigned char* vecA = convertStrToLongBv(text1, &bitsA);
+    //unsigned char* vecB = convertStrToLongBv(text2, &bitsB);
+    //unsigned char* vec = sumMod2(vecA, bitsA, vecB, bitsB);
+    //size_t bits = bitsA;
+    //printLongBv(vecA, bitsA);
+    //printLongBv(vecB, bitsB);
+    //printLongBv(vec, bits);
+    //free(vec);
+    //free(vecA);
+    //free(vecB);
+    //vec = NULL;
+    //vecA = NULL;
+    //vecB = NULL;
 
 
     // ~
@@ -275,7 +293,7 @@ void inversion(unsigned char* vec, size_t bits) {
 }
 
 void shiftLeft(unsigned char* vec, size_t bits, size_t k) {
-    if (vec && bits && k <= bits) {
+    if (vec && bits && k && k <= bits) {
         size_t bytes = ((bits - 1) / 8) + 1;
         size_t j = k / 8;
         size_t i = 0;
@@ -315,7 +333,7 @@ void shiftLeft(unsigned char* vec, size_t bits, size_t k) {
 }
 
 void shiftRight(unsigned char* vec, size_t bits, size_t k) {
-    if (vec && bits && k <= bits) {
+    if (vec && bits && k && k <= bits) {
         size_t bytes = ((bits - 1) / 8) + 1;
         size_t ix = k / 8;
         size_t j = bytes - 1;
