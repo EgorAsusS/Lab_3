@@ -26,28 +26,28 @@ int main() {
     //char text[] = "111111111";
 
     // convert/print
-    char text[] = "111100001";
+    //char text[] = "111100001";
     //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
     //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    size_t bits = 0;
-    unsigned char* vec = convertStrToLongBv(text, &bits);
-    char* str = convertLongBvToStr(vec, bits);
-    printLongBv(vec, bits);
-    if (str) {
-        printf("%s\n", str);
-    }
-    else {
-        printf("Error\n");
-    }
-    free(vec);
-    free(str);
-    vec = NULL;
-    str = NULL;
+    //size_t bits = 0;
+    //unsigned char* vec = convertStrToLongBv(text, &bits);
+    //char* str = convertLongBvToStr(vec, bits);
+    //printLongBv(vec, bits);
+    //if (str) {
+    //    printf("%s\n", str);
+    //}
+    //else {
+    //    printf("Error\n");
+    //}
+    //free(vec);
+    //free(str);
+    //vec = NULL;
+    //str = NULL;
 
     // & | ^
     //char text1[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-    ////char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    ////char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    //char text1[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    //char text2[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
     //char text2[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     //size_t bitsA = 0;
     //size_t bitsB = 0;
@@ -78,28 +78,28 @@ int main() {
 
 
     // <<
-//    char text[] = "00000000";
-//    char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-//    size_t bits = 0;
-//    unsigned char* vec = convertStrToLongBv(text, &bits);
-//    inversion(vec, bits);
-//    printLongBv(vec, bits);
-//    shiftLeft(vec, bits, 8);
-//    printLongBv(vec, bits);
-//    free(vec);
-//    vec = NULL;
+    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    size_t bits = 0;
+    unsigned char* vec = convertStrToLongBv(text, &bits);
+    inversion(vec, bits);
+    printLongBv(vec, bits);
+    shiftLeft(vec, bits, 50);
+    printLongBv(vec, bits);
+    free(vec);
+    vec = NULL;
 
     // >>
-//    char text[] = "00000000";
+    //char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     //char text[] = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
-//    size_t bits = 0;
-//    unsigned char* vec = convertStrToLongBv(text, &bits);
-//    inversion(vec, bits);
-//    printLongBv(vec, bits);
-//    shiftRight(vec, bits, 8);
-//    printLongBv(vec, bits);
-//    free(vec);
-//    vec = NULL;
+    //size_t bits = 0;
+    //unsigned char* vec = convertStrToLongBv(text, &bits);
+    //inversion(vec, bits);
+    //printLongBv(vec, bits);
+    //shiftRight(vec, bits, 50);
+    //printLongBv(vec, bits);
+    //free(vec);
+    //vec = NULL;
 
     //
 //    char text[] = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
@@ -301,14 +301,11 @@ void shiftLeft(unsigned char* vec, size_t bits, size_t k) {
         if (j) {
             while (j < bytes) {
                 vec[i] = vec[j];
+                vec[j] = 0;
                 i++;
                 j++;
             }
             iy = i - 1;
-            while (i < bytes) {
-                vec[i] = 0;
-                i++;
-            }
         }
         size_t bit = k % 8;
         size_t _bit = 8 - bit;
